@@ -24,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
-    }
+    },
+  isActive: {
+  type: DataTypes.BOOLEAN
+}
+
   }, {
     tableName: "users",
     timestamps: false
