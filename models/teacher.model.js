@@ -1,6 +1,6 @@
-// models/student.js
+// models/teacher.js
 module.exports = (sequelize, DataTypes) => {
-  const Student = sequelize.define("Student", {
+  const Teacher = sequelize.define("Teacher", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -24,25 +24,31 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   }, {
-    tableName: 'students',
+    tableName: 'teachers',
     timestamps: false
   });
 
-    Student.associate = (models) => {
+    // Optional: associate with Role if Role model exists
+  Teacher.associate = (models) => {
+    Teacher.belongsTo(models.user, {
+      foreignKey: 'user_id',
+      as: 'user'
+    });
+  };
 
-    Student.belongsTo(models.class, {
+     Teacher.associate = (models) => {
+
+    Teacher.belongsTo(models.class, {
       foreignKey: 'class_id',
       as: 'class'
     });
 
-    Student.belongsTo(models.user, {
+    Teacher.belongsTo(models.user, {
     foreignKey: 'user_id',
     as: 'user'
   });
 
   };
-  
 
-
-  return Student;
+  return Teacher;
 };
