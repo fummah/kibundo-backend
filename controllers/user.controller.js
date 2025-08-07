@@ -211,3 +211,119 @@ const created_by = req.user.id;
     res.status(500).json({ message: "Server error", error:err });
   }
 };
+
+exports.getSubjectById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const subject = await Subject.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          as: 'userCreated',
+          attributes: { exclude: ['password'] }, // adjust fields
+        },
+        {
+          model: Class,
+          as: 'class',
+          attributes: ['id', 'class_name'] // adjust based on your class model
+        }
+      ]
+    });
+
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    return res.status(200).json(subject);
+
+  } catch (error) {
+    console.error('Error fetching subject by ID:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+exports.getStudentById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const student = await Student.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] }, // adjust fields
+        },
+        {
+          model: Class,
+          as: 'class',
+          attributes: ['id', 'class_name'] // adjust based on your class model
+        }
+      ]
+    });
+
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    return res.status(200).json(student);
+
+  } catch (error) {
+    console.error('Error fetching student by ID:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+exports.getTeacherById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const teacher = await Teacher.findOne({
+      where: { id },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] }, // adjust fields
+        },
+        {
+          model: Class,
+          as: 'class',
+          attributes: ['id', 'class_name'] // adjust based on your class model
+        }
+      ]
+    });
+
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+
+    return res.status(200).json(teacher);
+
+  } catch (error) {
+    console.error('Error fetching teacher by ID:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+exports.deleteSubject = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const subject = await Subject.findByPk(id);
+
+    if (!subject) {
+      return res.status(404).json({ message: 'Subject not found' });
+    }
+
+    await subject.destroy();
+
+    return res.status(200).json({ message: 'Subject deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting subject:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

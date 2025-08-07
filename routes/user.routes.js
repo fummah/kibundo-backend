@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getAllUsers, getAllRoles, addstudent, addteacher, addclass, addsubject, getAllClasses, getAllStudents, getAllTeachers, getAllSubjects } = require("../controllers/user.controller");
+const { getAllUsers, getAllRoles, addstudent, addteacher, addclass, addsubject, getAllClasses, getAllStudents, 
+    getAllTeachers, getAllSubjects, getSubjectById, getStudentById, getTeacherById, deleteSubject } = require("../controllers/user.controller");
 const { getDashboard, getStatisticsDashboard, getReportFilters, generateReport, getOverviewDashboard } = require("../controllers/others.controller");
 const { verifyToken } = require("../middlewares/authJwt");
 
@@ -20,5 +21,9 @@ router.get("/allclasses", verifyToken, getAllClasses);
 router.get("/allstudents", verifyToken, getAllStudents);
 router.get("/allteachers", verifyToken, getAllTeachers);
 router.get("/allsubjects", verifyToken, getAllSubjects);
+router.get('/subject/:id', verifyToken,getSubjectById);
+router.get('/student/:id', verifyToken,getStudentById);
+router.get('/teacher/:id', verifyToken,getTeacherById);
+router.delete('/subject/:id', verifyToken,deleteSubject);
 
 module.exports = router;
